@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Listening Loop, An Evidence-Informed Data Use Strategy for Early Childhood Learning at Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Warm parchment palette (from v1) */
+    --bg: #f4ede1;
+    --bg-soft: #ece2d0;
+    --bg-elev: #faf5e9;
+    --paper: #1a1a1a;
+    --paper-soft: #3a3a3a;
+    --ink: #1a1a1a;
+    --ink-soft: #3a3a3a;
+    --ink-mid: #6b6354;
+    --ink-dim: #8b8470;
+    --moss: #8b2d1f;          /* deep red — primary accent */
+    --moss-bright: #8b2d1f;   /* same — used in headings/active states */
+    --ochre: #b8893d;          /* gold — secondary accent */
+    --rose: #c5614a;           /* soft red — tertiary accent */
+    --line: rgba(58, 42, 28, 0.12);
+    --line-strong: rgba(58, 42, 28, 0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.65;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Subtle ambient gradient */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 800px 600px at 80% 20%, rgba(184, 137, 61, 0.1), transparent 60%),
+      radial-gradient(ellipse 600px 400px at 10% 90%, rgba(139, 45, 31, 0.06), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ---------- LAYOUT SHELL ---------- */
+  .shell {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ---------- LEFT RAIL ---------- */
+  aside {
+    background: #1a1a1a;
+    color: #f4ede1;
+    padding: 2.5rem 1.8rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .mark {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.6rem;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+    color: #f4ede1;
+  }
+  .mark::before {
+    content: "❋ ";
+    color: var(--ochre);
+    font-style: normal;
+  }
+  .mark-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(244, 237, 225, 0.5);
+    margin-bottom: 2.5rem;
+  }
+  .rail-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(244, 237, 225, 0.4);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.9;
+  }
+  .rail-meta span { display: block; color: rgba(244, 237, 225, 0.7); }
+  nav.rail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+  nav.rail a {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    align-items: baseline;
+    padding: 0.7rem 0.6rem 0.7rem 0.4rem;
+    text-decoration: none;
+    color: rgba(244, 237, 225, 0.7);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 400;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.4s cubic-bezier(0.22, 1, 0.36, 1), color 0.4s cubic-bezier(0.22, 1, 0.36, 1), padding-left 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+  }
+  nav.rail a .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    color: rgba(244, 237, 225, 0.35);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    transition: color 0.4s ease;
+  }
+  nav.rail a:hover {
+    color: var(--ochre);
+    padding-left: 0.8rem;
+  }
+  nav.rail a:hover .num { color: var(--ochre); }
+  nav.rail a.active {
+    color: #f4ede1;
+    background: rgba(184, 137, 61, 0.12);
+    padding-left: 0.8rem;
+  }
+  nav.rail a.active .num { color: var(--ochre); }
+  nav.rail a.active::before {
+    content: "";
+    position: absolute;
+    left: -1.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 1px;
+    background: var(--ochre);
+    animation: dash 1s ease forwards;
+  }
+  @keyframes dash {
+    from { width: 0; }
+    to { width: 12px; }
+  }
+  .rail-foot {
+    margin-top: auto;
+    padding-top: 2rem;
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: rgba(244, 237, 225, 0.5);
+    line-height: 1.5;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* ---------- MAIN CANVAS ---------- */
+  main {
+    background: var(--bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  .page {
+    display: none;
+    min-height: 100vh;
+  }
+  .page.active {
+    display: block;
+    animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Stagger child elements on active page */
+  .page.active > * > * {
+    animation: fadeUpSlight 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+  .page.active > * > *:nth-child(1) { animation-delay: 0.05s; }
+  .page.active > * > *:nth-child(2) { animation-delay: 0.12s; }
+  .page.active > * > *:nth-child(3) { animation-delay: 0.19s; }
+  .page.active > * > *:nth-child(4) { animation-delay: 0.26s; }
+  .page.active > * > *:nth-child(5) { animation-delay: 0.33s; }
+  .page.active > * > *:nth-child(6) { animation-delay: 0.4s; }
+  @keyframes fadeUpSlight {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- TOP STRIP ---------- */
+  .strip {
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--line);
+    padding: 1rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+  }
+  .strip span::before { content: "◦ "; color: var(--moss); }
+  .strip-right { display: flex; gap: 2rem; }
+
+  /* ---------- CONTAINER ---------- */
+  .container {
+    padding: 4rem 3rem 6rem;
+    max-width: 880px;
+  }
+  .container-wide {
+    padding: 4rem 3rem 6rem;
+  }
+
+  /* ---------- HEADERS ---------- */
+  .pg-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--moss);
+    margin-bottom: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .pg-num::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--moss), transparent);
+    max-width: 120px;
+  }
+
+  h1 {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.8rem;
+    color: var(--ink);
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--moss);
+  }
+  h2 {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+    margin: 3.5rem 0 1rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    position: relative;
+    padding-left: 1.2rem;
+  }
+  h2::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--ochre);
+    border-radius: 50%;
+    transform: translateY(-50%);
+  }
+  h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 1.6rem 0 0.6rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.02rem;
+    margin-bottom: 1.1rem;
+    color: var(--ink-soft);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+  p strong { color: var(--ink); font-weight: 500; }
+  .lede {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 1.45rem;
+    line-height: 1.45;
+    color: var(--ink);
+    font-weight: 400;
+    margin-bottom: 2rem;
+    max-width: 720px;
+  }
+  .subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 500;
+    color: var(--ochre);
+    margin-bottom: 2.2rem;
+  }
+
+  /* ---------- HOME / HERO ---------- */
+  .hero-wrap {
+    padding: 0;
+    position: relative;
+  }
+  .hero-meta-strip {
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--line);
+    padding: 1rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .hero-meta-strip span strong {
+    color: var(--ink-soft);
+    font-weight: 500;
+    margin-right: 0.4rem;
+  }
+  .hero-main {
+    padding: 6rem 3rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-main::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -20%;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(184, 137, 61, 0.18), transparent 65%);
+    transform: translateY(-50%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: drift 18s ease-in-out infinite;
+  }
+  @keyframes drift {
+    0%, 100% { transform: translateY(-50%) translateX(0); }
+    50% { transform: translateY(-48%) translateX(-30px); }
+  }
+  .hero-issue {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--moss);
+    margin-bottom: 2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .hero-issue::before {
+    content: "";
+    width: 24px;
+    height: 1px;
+    background: var(--moss);
+  }
+  .hero-h1 {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: clamp(3.5rem, 9vw, 7.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    margin-bottom: 2rem;
+    max-width: 900px;
+    color: var(--ink);
+  }
+  .hero-h1 em {
+    font-style: italic;
+    color: var(--moss);
+  }
+  .hero-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.15rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    font-weight: 300;
+    max-width: 620px;
+    margin-bottom: 3rem;
+  }
+  .hero-statement {
+    margin: 3rem 0;
+    padding: 2.2rem 2.5rem;
+    background: var(--bg-elev);
+    border-left: 3px solid var(--moss);
+    border-radius: 0 4px 4px 0;
+    max-width: 760px;
+    position: relative;
+    box-shadow: 0 2px 30px rgba(58, 42, 28, 0.08);
+  }
+  .hero-statement::before {
+    content: "Key Statement";
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--moss);
+    margin-bottom: 0.9rem;
+  }
+  .hero-statement p {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    line-height: 1.45;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  /* ---------- INSIGHT / PRINCIPLE ---------- */
+  .insight {
+    margin: 2.5rem 0;
+    padding: 2rem 2.2rem;
+    background: linear-gradient(135deg, rgba(139, 45, 31, 0.05), rgba(184, 137, 61, 0.07));
+    border: 1px solid rgba(139, 45, 31, 0.15);
+    border-radius: 12px;
+    position: relative;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.5s ease;
+  }
+  .insight:hover {
+    transform: translateY(-2px);
+    border-color: rgba(139, 45, 31, 0.3);
+  }
+  .insight::before {
+    content: "✦  Critical Insight";
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--moss);
+    margin-bottom: 0.9rem;
+  }
+  .insight p {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.25rem;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.45;
+  }
+  .principle {
+    margin: 3rem 0;
+    padding: 2.5rem 2.5rem;
+    background: #1a1a1a;
+    color: var(--bg);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .principle::after {
+    content: "";
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 160px;
+    height: 160px;
+    background: radial-gradient(circle, var(--ochre), transparent 70%);
+    opacity: 0.5;
+    border-radius: 50%;
+  }
+  .principle::before {
+    content: "Key Principle";
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ochre);
+    margin-bottom: 1rem;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+  }
+  .principle p {
+    color: var(--bg);
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.5rem;
+    margin: 0;
+    line-height: 1.4;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ---------- ICEBERG ---------- */
+  .iceberg {
+    margin: 2.5rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--line-strong);
+  }
+  .iceberg-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.5s ease;
+  }
+  .iceberg-row:last-child { border-bottom: none; }
+  .iceberg-row:nth-child(1) { background: rgba(184, 137, 61, 0.05); }
+  .iceberg-row:nth-child(2) { background: rgba(184, 137, 61, 0.1); }
+  .iceberg-row:nth-child(3) { background: rgba(184, 137, 61, 0.18); }
+  .iceberg-row:nth-child(4) { background: rgba(139, 45, 31, 0.14); }
+  .iceberg-row:hover { background: rgba(184, 137, 61, 0.25); }
+  .iceberg-label {
+    padding: 1.4rem 1.6rem;
+    border-right: 1px solid var(--line);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--moss);
+    letter-spacing: -0.005em;
+  }
+  .iceberg-label small {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-mid);
+    margin-top: 0.4rem;
+    font-weight: 400;
+  }
+  .iceberg-content {
+    padding: 1.4rem 1.6rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.98rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    font-weight: 300;
+  }
+
+  /* ---------- INQUIRY CYCLE ---------- */
+  .cycle {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.8rem;
+    margin: 2rem 0 2.5rem;
+  }
+  .cycle-step {
+    padding: 1.6rem 1.2rem;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.5s ease, background 0.5s ease;
+    position: relative;
+    cursor: default;
+  }
+  .cycle-step:hover {
+    transform: translateY(-4px);
+    border-color: var(--moss);
+    background: rgba(139, 45, 31, 0.05);
+  }
+  .cycle-step .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--moss-bright);
+    letter-spacing: 0.12em;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .cycle-step h4 {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.4rem;
+    margin: 0.5rem 0 0.7rem;
+    color: var(--ink);
+  }
+  .cycle-step p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    margin: 0;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    font-weight: 300;
+  }
+
+  /* ---------- LOOP CARDS ---------- */
+  .loops {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin: 2rem 0;
+  }
+  .loop-card {
+    padding: 2.2rem 2rem;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.5s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .loop-card:hover { transform: translateY(-3px); }
+  .loop-card.r { border-top: 2px solid var(--moss); }
+  .loop-card.b { border-top: 2px solid var(--ochre); }
+  .loop-card::after {
+    content: "";
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    opacity: 0.08;
+    transition: opacity 0.5s ease;
+  }
+  .loop-card.r::after { background: var(--moss); }
+  .loop-card.b::after { background: var(--ochre); }
+  .loop-card:hover::after { opacity: 0.18; }
+  .loop-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    font-weight: 500;
+    display: inline-block;
+  }
+  .loop-card.r .loop-tag { color: var(--moss); }
+  .loop-card.b .loop-tag { color: var(--ochre); }
+  .loop-card h3 {
+    margin-top: 0.4rem;
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.5rem;
+  }
+
+  /* ---------- COMPARE ---------- */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin: 2rem 0;
+  }
+  .compare-col {
+    padding: 2.2rem 2rem;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .compare-col:hover { transform: translateY(-3px); }
+  .compare-col:first-child { border-top: 2px solid var(--moss); }
+  .compare-col:last-child { border-top: 2px solid var(--ochre); }
+  .compare-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin-bottom: 0.8rem;
+    font-weight: 500;
+  }
+  .compare-col:first-child .compare-tag { color: var(--moss); }
+  .compare-col:last-child .compare-tag { color: var(--ochre); }
+  .compare-col h3 {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.6rem;
+    margin-top: 0;
+  }
+
+  /* ---------- VIDEO EMBED ---------- */
+  .video-embed {
+    margin: 2.5rem 0;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .video-embed:hover {
+    border-color: var(--line-strong);
+    transform: translateY(-2px);
+  }
+  .video-embed-head {
+    padding: 1.1rem 1.8rem;
+    background: rgba(184, 137, 61, 0.08);
+    border-bottom: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .video-embed-head span:last-child { color: var(--ochre); }
+  .video-frame {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+  }
+  .video-frame iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* ---------- VIDEO LINK ---------- */
+  .video-link-wrap {
+    margin: 1rem 0 2.5rem 0;
+    padding: 1rem 1.4rem;
+    background: rgba(184, 137, 61, 0.06);
+    border-left: 3px solid var(--moss);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .video-link-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--moss);
+    font-weight: 700;
+  }
+  .video-link-wrap a {
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    word-break: break-all;
+    text-decoration: none;
+    border-bottom: 1px solid var(--ochre);
+    padding-bottom: 1px;
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+  .video-link-wrap a:hover {
+    color: var(--moss);
+    border-bottom-color: var(--moss);
+  }
+
+  /* ---------- ACTION PLAN TABLE ---------- */
+  .action-plan {
+    margin: 2.5rem 0;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .action-plan:hover {
+    border-color: var(--line-strong);
+    transform: translateY(-2px);
+  }
+  .action-plan-head {
+    padding: 1.4rem 1.8rem 1.2rem 1.8rem;
+    background: var(--ink);
+    color: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .action-plan-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .action-plan-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.6rem;
+    font-style: italic;
+    line-height: 1.2;
+    color: var(--bg);
+    margin: 0 0 0.4rem 0;
+  }
+  .action-plan-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--bg-elev);
+    margin: 0;
+    opacity: 0.85;
+  }
+  .action-plan table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    background: var(--bg-elev);
+  }
+  .action-plan th {
+    text-align: left;
+    padding: 0.9rem 0.9rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--moss);
+    font-weight: 700;
+    background: rgba(184, 137, 61, 0.10);
+    border-bottom: 2px solid var(--ochre);
+    vertical-align: top;
+  }
+  .action-plan td {
+    padding: 0.9rem 0.9rem;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .action-plan tr:last-child td {
+    border-bottom: none;
+  }
+  .action-plan tr:hover td {
+    background: rgba(184, 137, 61, 0.04);
+  }
+  .action-plan .domain-cell {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--moss);
+    font-weight: 700;
+    width: 13%;
+  }
+  .action-plan .num-cell {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--moss);
+    font-weight: 400;
+    width: 5%;
+    text-align: center;
+  }
+  .action-plan .col-label {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+
+  /* ---------- INTERVIEW ---------- */
+  .interview {
+    margin: 2.5rem 0;
+    padding: 0;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.5s ease;
+  }
+  .interview:hover { border-color: var(--line-strong); }
+  .interview-head {
+    padding: 1.1rem 1.8rem;
+    background: rgba(139, 45, 31, 0.06);
+    border-bottom: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .interview-head span:last-child { color: var(--moss); }
+  .interview-body { padding: 2rem 1.8rem; }
+  .interview-body h3 {
+    margin-top: 0;
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: var(--ink);
+  }
+  .placeholder {
+    margin: 0.9rem 0;
+    padding: 1rem 1.3rem;
+    background: rgba(184, 137, 61, 0.08);
+    border: 1px dashed rgba(184, 137, 61, 0.4);
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--ink-mid);
+    line-height: 1.55;
+    transition: border-color 0.4s ease, background 0.4s ease;
+  }
+  .placeholder:hover {
+    border-color: var(--ochre);
+    background: rgba(184, 137, 61, 0.14);
+  }
+  .placeholder::before {
+    content: "↳ ";
+    color: var(--ochre);
+    font-weight: 700;
+  }
+
+  /* ---------- CHALLENGES ---------- */
+  .challenge-item {
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 2rem;
+    align-items: start;
+    transition: padding-left 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .challenge-item:hover { padding-left: 0.8rem; }
+  .challenge-item:last-child { border-bottom: none; }
+  .challenge-num {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 4.5rem;
+    color: var(--moss);
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    opacity: 0.75;
+    transition: opacity 0.5s ease;
+  }
+  .challenge-item:hover .challenge-num { opacity: 1; }
+  .challenge-item h3 {
+    margin: 0.3rem 0 0.7rem;
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.6rem;
+    color: var(--ink);
+  }
+
+  /* ---------- REFERENCES ---------- */
+  .references p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    padding: 1rem 0 1rem 0;
+    padding-left: 2.5rem;
+    text-indent: -2.5rem;
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-weight: 300;
+    transition: color 0.4s ease, padding-left 0.4s ease;
+  }
+  .references p:hover {
+    color: var(--ink);
+    padding-left: 2.8rem;
+  }
+  .references p:last-child { border-bottom: none; }
+  .references em { color: var(--moss); font-style: italic; }
+
+  /* ---------- ORNAMENT ---------- */
+  .ornament {
+    margin: 4rem 0;
+    text-align: center;
+    color: var(--ochre);
+    font-size: 1.4rem;
+    letter-spacing: 1.5rem;
+    opacity: 0.6;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 1.5rem 3rem;
+    background: #1a1a1a;
+    color: rgba(244, 237, 225, 0.6);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer span:last-child { color: var(--ochre); }
+
+  /* ---------- SCROLLBAR ---------- */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(139, 45, 31, 0.2);
+    border-radius: 4px;
+    transition: background 0.3s ease;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(139, 45, 31, 0.4); }
+
+  /* ---------- SELECTION ---------- */
+  ::selection {
+    background: rgba(184, 137, 61, 0.35);
+    color: var(--ink);
+  }
+
+  /* ---------- MOBILE ---------- */
+  @media (max-width: 920px) {
+    .shell { grid-template-columns: 1fr; }
+    aside {
+      position: static;
+      height: auto;
+      padding: 1.5rem;
+    }
+    nav.rail a.active::before { display: none; }
+    .hero-meta-strip { padding: 1rem 1.5rem; }
+    .hero-main { padding: 4rem 1.5rem 3rem; }
+    .container, .container-wide { padding: 3rem 1.5rem 4rem; }
+    .strip { padding: 1rem 1.5rem; flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    .strip-right { flex-direction: column; gap: 0.3rem; }
+    .cycle { grid-template-columns: 1fr; }
+    .loops, .compare { grid-template-columns: 1fr; }
+    .iceberg-row { grid-template-columns: 1fr; }
+    .iceberg-label { border-right: none; border-bottom: 1px solid var(--line); }
+    .challenge-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    .challenge-num { font-size: 3.5rem; }
+    footer { padding: 1.5rem 1.5rem; }
+    .hero-statement { padding: 1.6rem 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ============== LEFT RAIL ============== -->
+  <aside>
+    <div class="mark">Listening<br>Loop</div>
+    <div class="mark-sub">KIMEP · Final Assessment</div>
+
+    <div class="rail-meta">
+      <span>Vol. 01 · Issue 01</span>
+      Evidence Usage Strategy<br>
+      April 2026
+    </div>
+
+    <nav class="rail">
+      <a data-page="home" class="active"><span class="num">00</span><span>Home</span></a>
+      <a data-page="why"><span class="num">01</span><span>Why It Matters</span></a>
+      <a data-page="data"><span class="num">02</span><span>Data &amp; Context</span></a>
+      <a data-page="strategy"><span class="num">03</span><span>The Strategy</span></a>
+      <a data-page="dance"><span class="num">04</span><span>Dance of Change</span></a>
+      <a data-page="approaches"><span class="num">05</span><span>Waldorf · Montessori</span></a>
+      <a data-page="interviews"><span class="num">06</span><span>Field Voices</span></a>
+      <a data-page="challenges"><span class="num">07</span><span>Challenges</span></a>
+      <a data-page="reflection"><span class="num">08</span><span>Reflection</span></a>
+      <a data-page="refs"><span class="num">09</span><span>References</span></a>
+    </nav>
+
+    <div class="rail-foot">
+      An evidence-informed data use strategy for early childhood learning at home.
+    </div>
+  </aside>
+
+  <!-- ============== MAIN ============== -->
+  <main>
+
+    <!-- ============== HOME ============== -->
+    <section class="page active" id="home">
+      <div class="hero-wrap">
+        <div class="hero-meta-strip">
+          <span><strong>Filed:</strong> April 2026</span>
+          <span><strong>Author:</strong> T. Navarro</span>
+          <span><strong>Course:</strong> Data and Evidence-Based Leadership</span>
+          <span><strong>Pages:</strong> 10 / 10</span>
+        </div>
+
+        <div class="hero-main">
+          <div class="hero-issue">No. 01, Final Assessment</div>
+          <h1 class="hero-h1">The Listening<br><em>Loop.</em></h1>
+          <p class="hero-sub">An evidence-informed data use strategy for early childhood learning at home, integrating Waldorf and Montessori approaches. This site presents a working strategy for parents who want to use observation, evidence, and reflective judgment to guide a young child's learning at home.</p>
+
+          <div class="hero-statement">
+            <p>In a home learning environment, data serves as a starting point for conversation rather than a verdict on the child. It opens a dialogue between what we observe, what we value, and what we choose to do next.</p>
+          </div>
+
+          <div class="ornament">❋ &nbsp; ❋ &nbsp; ❋</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== WHY THIS MATTERS ============== -->
+    <section class="page" id="why">
+      <div class="strip">
+        <span>Page 01</span>
+        <div class="strip-right">
+          <span>Strategic Importance</span>
+        </div>
+      </div>
+      <div class="container">
+        <div class="pg-num">01 · Strategic Importance</div>
+        <h1>Why this <em>matters</em>.</h1>
+        <p class="lede">The first six years of life mark the most consequential period of learning, rather than mere preparation for it. What happens in a home during this window shapes language, attention, emotional regulation, and the child's working theory of how the world responds to them.</p>
+
+        <h2>Early childhood as a strategic priority</h2>
+        <p>Heckman's economic analyses have shown that investment in the earliest years yields higher returns than any later educational intervention, because skills beget skills and motivation begets motivation (Heckman, 2006). For a parent operating outside of formal schooling, this carries practical weight. It means that the daily, unglamorous decisions about how a morning unfolds, which book is read, whether a tantrum is met with curiosity or correction, are themselves the strategic priorities. The home functions as the intervention itself, rather than as a holding space until "real school" begins.</p>
+
+        <h2>The hardest of the hard sciences</h2>
+        <p>And yet, acting on this knowledge is harder than it sounds. Education has been described as the hardest of the hard sciences precisely because so many variables interact at once and so few of them stay still long enough to be measured cleanly (Berliner, 2002). A child's mood, the quality of last night's sleep, an older sibling's mood, the weather, the parent's own stress, the texture of the breakfast, all of these can shape the morning's learning more than any planned activity. Educational complexity means that what works in one home with one child on one Tuesday may simply fail to transfer.</p>
+
+        <div class="insight">
+          <p>If education is the hardest science, then a home is its most uncontrolled laboratory, and that is precisely why naive applications of "what the research says" often falter there.</p>
+        </div>
+
+        <h2>The limits of data</h2>
+        <p>This complexity sets the limits of what data can do. Numbers about a child's vocabulary, sleep duration, or screen time are useful, yet remain radically incomplete. They tell us what happened, leaving the why unanswered; they describe the surface, leaving the structure underneath unexamined. Evidence-based decision making in education requires contextual interpretation, including careful consideration of for whom, when, why, and where decisions are applied (Nutley et al., 2003; Timperley, 2005). Data without judgment becomes a checklist. Judgment without data becomes a hunch. The strategy proposed here lives in the productive tension between the two.</p>
+
+        <div class="principle">
+          <p>The goal of using data at home is to keep the parent honest about what the child is actually telling them, rather than to prove a method right.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== DATA & CONTEXT ============== -->
+    <section class="page" id="data">
+      <div class="strip">
+        <span>Page 02</span>
+        <div class="strip-right">
+          <span>Evidence Architecture</span>
+          <span>Warm Data</span>
+        </div>
+      </div>
+      <div class="container">
+        <div class="pg-num">02 · Data &amp; Context</div>
+        <h1>What counts as <em>data</em> at home?</h1>
+        <p class="lede">In a home environment, data rarely arrives as a number on a screen. It arrives as a yawn, a refused activity, a sudden burst of language, a question repeated for the third day in a row. The strategy depends on widening what we are willing to call evidence.</p>
+
+        <h2>Four categories of everyday evidence</h2>
+        <p>The strategy organizes home observation around four categories that are practical to track and meaningful to interpret. <strong>Language data</strong> includes new vocabulary, sentence complexity, the questions a child asks, and the languages they code-switch between, which matters especially in a multilingual Kazakh household. <strong>Sleep and rhythm data</strong> covers wake times, nap quality, and the connection between rest and learning readiness, since cognitive availability is downstream of physical regulation. <strong>Emotional data</strong> tracks frustration thresholds, transitions between activities, and recovery time after upset, which together reveal the child's developing self-regulation. <strong>Engagement data</strong> notes which materials a child returns to without prompting, how long they sustain attention, and what they abandon, a signal that, in Montessori thought, points directly to the child's current developmental work.</p>
+
+        <h2>Observation is interpretation</h2>
+        <p>A practical truth that the strategy treats seriously is that observation always carries interpretation. Two parents watching the same child build a tower will record different things, because what one notices reflects what one already cares about. This is why evidence-based practice in education emphasizes combining data with reflectivity within an ongoing inquiry cycle (Timperley, 2005; Nutley et al., 2003). The data speaks through the parent rather than for itself.</p>
+
+        <h2>Warm data: information about relationships</h2>
+        <p>This is where Bateson's concept of <em>warm data</em> becomes essential. Warm data is information about the relationships between things, gathered across multiple contexts at once, and reducing it to a single metric strips away what makes it meaningful (Bateson, 2017). A cold datum says: the child slept seven hours. A warm reading says: the child slept seven hours after a difficult afternoon with their grandmother, woke unsettled, and was unusually clingy during the morning routine that follows the visit. The first datum is true. The second is useful.</p>
+
+        <div class="insight">
+          <p>Warm data is what parents have always gathered intuitively. The contribution of this strategy is to make that gathering deliberate, recordable, and reviewable, while preserving its texture rather than flattening it into a spreadsheet.</p>
+        </div>
+
+        <h2>The risk of premature precision</h2>
+        <p>There is a temptation, especially for parents who are professionally numerate, to build elaborate tracking systems that look rigorous but quietly drift away from the child. A strategy that demands daily numerical entries on twelve dimensions tends to be abandoned by month two, or worse, sustained at the cost of presence. The strategy here errs toward fewer, richer notes over more, thinner ones. Three sentences a day, written with attention, outperform thirty data points logged on autopilot.</p>
+      </div>
+    </section>
+
+    <!-- ============== STRATEGY ============== -->
+    <section class="page" id="strategy">
+      <div class="strip">
+        <span>Page 03</span>
+        <div class="strip-right">
+          <span>Core Model</span>
+          <span>Inquiry Cycle + Iceberg</span>
+        </div>
+      </div>
+      <div class="container">
+        <div class="pg-num">03 · The Core Strategy</div>
+        <h1>The <em>Listening Loop</em>.</h1>
+        <p class="subtitle">A five-stage inquiry cycle layered onto the iceberg model</p>
+        <p class="lede">The strategy is named the Listening Loop because its central act is listening, in a structured way that can be repeated, reviewed, and revised, rather than measuring, judging, or planning. It binds together the inquiry cycle from teacher-as-researcher traditions (Timperley, 2005) with the systems-thinking iceberg, and uses Nutley's framework for translating evidence into practice as the bridge between knowing and acting (Nutley et al., 2003).</p>
+
+        <h2>The inquiry cycle: five stages</h2>
+        <div class="cycle">
+          <div class="cycle-step">
+            <div class="num">01 / Ask</div>
+            <h4>Ask</h4>
+            <p>What is the question this week? Frame it concretely: "Why is the morning routine collapsing?" beats "How is my child doing?"</p>
+          </div>
+          <div class="cycle-step">
+            <div class="num">02 / Observe</div>
+            <h4>Observe</h4>
+            <p>Gather warm and cold data across language, sleep, emotion, and engagement. Watch without intervening for set periods.</p>
+          </div>
+          <div class="cycle-step">
+            <div class="num">03 / Interpret</div>
+            <h4>Interpret</h4>
+            <p>Read observations through the iceberg. What event repeats? What pattern? What structure produces it? What belief sustains it?</p>
+          </div>
+          <div class="cycle-step">
+            <div class="num">04 / Act</div>
+            <h4>Act</h4>
+            <p>Make one small, reversible change. Translate evidence into a single concrete adjustment, rather than a wholesale redesign of the day.</p>
+          </div>
+          <div class="cycle-step">
+            <div class="num">05 / Reflect</div>
+            <h4>Reflect</h4>
+            <p>After a week, ask: did the change help the child, or only soothe the parent? Then return to Ask.</p>
+          </div>
+        </div>
+
+        <h2>Layering the iceberg model</h2>
+        <p>The interpret stage is where most home observation goes wrong, because it stops at the event level. A child melts down at lunch; the parent concludes the child was tired or hungry; the loop closes. The iceberg model insists on going further, and it is the analytical engine of this strategy.</p>
+
+        <div class="iceberg">
+          <div class="iceberg-row">
+            <div class="iceberg-label">Events<small>what just happened</small></div>
+            <div class="iceberg-content">The child refused to put on shoes this morning. Observable, datable, easy to record. On its own, almost useless for action.</div>
+          </div>
+          <div class="iceberg-row">
+            <div class="iceberg-label">Patterns<small>what keeps happening</small></div>
+            <div class="iceberg-content">The shoe refusal happens four mornings out of seven, always after screen time, never after outdoor play. A pattern is an event observed enough times to suggest something other than randomness.</div>
+          </div>
+          <div class="iceberg-row">
+            <div class="iceberg-label">Structures<small>what produces the pattern</small></div>
+            <div class="iceberg-content">The morning sequence, wake, screen, rushed dressing, departure, generates dysregulation that lands on whatever comes next. The structure of the morning is the issue, rather than the shoes themselves.</div>
+          </div>
+          <div class="iceberg-row">
+            <div class="iceberg-label">Mental Models<small>what we believe is normal</small></div>
+            <div class="iceberg-content">An unspoken parental belief that screens are a harmless way to "buy time" in the morning sustains the structure. Until that belief is examined, no change at the structure level will hold.</div>
+          </div>
+        </div>
+
+        <p>The discipline of moving down the iceberg is what separates evidence-informed parenting from reactive parenting. Most family conflicts are managed at the event level and re-erupt because the structure and mental models that produce them remain untouched.</p>
+
+        <div class="insight">
+          <p>Acting at the event level feels productive and changes nothing. Acting at the structure or mental-model level feels uncomfortable and changes everything.</p>
+        </div>
+
+        <h2>Translating evidence into practice</h2>
+        <p>Knowing what to do differs from doing it. Nutley and colleagues distinguish between the diffusion of evidence, its dissemination, its implementation, and its sustained use in practice (Nutley et al., 2003). For a parent, this maps almost exactly onto the gap between reading a parenting book and changing tomorrow morning. The Listening Loop addresses this gap by insisting that every cycle ends with one small, reversible action, a sustainable behavioral change rather than an ambitious overhaul that collapses by Wednesday.</p>
+
+        <h2>Inquiry as ongoing posture</h2>
+        <p>Timperley's work on professional inquiry frames teaching as an ongoing investigation rather than a sequence of fixed decisions, in which evidence is used to adjust practice and adjusted practice generates new evidence (Timperley, 2005). Translated to the home, this means the Listening Loop functions as a posture rather than a project with a completion date. The point is to maintain a working relationship between observation and action that can survive the changes, since the child keeps changing and arriving at one fixed method would only freeze that relationship.</p>
+
+        <div class="action-plan">
+          <div class="action-plan-head">
+            <div class="action-plan-eyebrow">Working Action Plan</div>
+            <h3 class="action-plan-title">Evidence-Informed Homeschooling Action Plan</h3>
+            <p class="action-plan-subtitle">A contextual, reflective data use strategy for early childhood learning</p>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Action</th>
+                <th>Objective</th>
+                <th>Timeline</th>
+                <th>Responsible</th>
+                <th>Resources</th>
+                <th>Evidence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="num-cell">1</td>
+                <td>Collect daily observational data (language, emotions, routines, engagement)</td>
+                <td>Understand developmental patterns</td>
+                <td>Week 1–2 (ongoing)</td>
+                <td>Parent</td>
+                <td>Notebook, phone</td>
+                <td>Notes, tracking charts</td>
+              </tr>
+              <tr>
+                <td class="num-cell">2</td>
+                <td>Apply inquiry cycle (Ask → Observe → Interpret → Act → Reflect)</td>
+                <td>Structure reflective decision-making</td>
+                <td>Week 2–4</td>
+                <td>Parent</td>
+                <td>Framework</td>
+                <td>Reflections, decisions</td>
+              </tr>
+              <tr>
+                <td class="num-cell">3</td>
+                <td>Analyze using iceberg model</td>
+                <td>Identify deeper patterns</td>
+                <td>Week 3</td>
+                <td>Parent</td>
+                <td>Diagram</td>
+                <td>Pattern analysis</td>
+              </tr>
+              <tr>
+                <td class="num-cell">4</td>
+                <td>Adapt Waldorf &amp; Montessori approaches</td>
+                <td>Responsive learning</td>
+                <td>Week 3–5</td>
+                <td>Parent</td>
+                <td>Materials</td>
+                <td>Engagement changes</td>
+              </tr>
+              <tr>
+                <td class="num-cell">5</td>
+                <td>Conduct interviews</td>
+                <td>Gain real-world insights</td>
+                <td>Week 4</td>
+                <td>Parent + participants</td>
+                <td>Zoom / messages</td>
+                <td>Summaries</td>
+              </tr>
+              <tr>
+                <td class="num-cell">6</td>
+                <td>Use warm data &amp; judgment</td>
+                <td>Contextual interpretation</td>
+                <td>Week 4–5</td>
+                <td>Parent</td>
+                <td>Notes</td>
+                <td>Reflections</td>
+              </tr>
+              <tr>
+                <td class="num-cell">7</td>
+                <td>Sustain long-term homeschooling plan</td>
+                <td>Continuous development</td>
+                <td>Ongoing</td>
+                <td>Parent</td>
+                <td>Materials, community</td>
+                <td>Progress tracking</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="principle">
+          <p>The Listening Loop is a technique for keeping the parent's attention honest, rather than a technique for managing a child.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== DANCE OF CHANGE ============== -->
+    <section class="page" id="dance">
+      <div class="strip">
+        <span>Page 04</span>
+        <div class="strip-right">
+          <span>Systems Dynamics</span>
+          <span>Senge / Reinforcing &amp; Balancing</span>
+        </div>
+      </div>
+      <div class="container">
+        <div class="pg-num">04 · Systems Dynamics</div>
+        <h1>The <em>Dance of Change</em>.</h1>
+        <p class="subtitle">Reinforcing and balancing loops in family learning</p>
+        <p class="lede">Every change effort in a household sets two forces in motion at once: a force that helps the change grow, and a force that pulls it back toward the previous equilibrium. Senge's dance of change captures this as the interaction between reinforcing and balancing loops (Senge et al., 1999), and it explains why so many well-intentioned home routines quietly collapse.</p>
+
+        <div class="loops">
+          <div class="loop-card r">
+            <div class="loop-tag">R · Reinforcing</div>
+            <h3>What we seek to grow</h3>
+            <p>A reinforcing loop amplifies change in the same direction. When a parent introduces a calm morning ritual and the child responds with smoother transitions, the parent feels encouraged, becomes more consistent, and the ritual becomes self-sustaining. Growth begets growth. In family learning, examples include a child's expanding vocabulary fueling more conversation, which fuels more vocabulary; or a parent's growing skill in observation deepening their attention, which sharpens their observations further.</p>
+          </div>
+          <div class="loop-card b">
+            <div class="loop-tag">B · Balancing</div>
+            <h3>What constrains the growth</h3>
+            <p>A balancing loop pulls the system back toward a prior state. Parental fatigue, a sibling's needs, an unexpected work week, a grandparent who undermines the new routine, each acts as a limit. Balancing loops act as the system protecting itself from instability, rather than as enemies of change. Ignoring them is why ambitious home reforms collapse. Naming them is the first step toward designing around them.</p>
+          </div>
+        </div>
+
+        <h2>Applied to homeschooling</h2>
+        <p>A parent decides to introduce a daily Montessori-inspired practical life activity, pouring water between jugs at the breakfast table. In week one, the child is delighted and absorbed. The reinforcing loop is visible: engagement leads to repetition, repetition leads to mastery, mastery leads to confidence, and confidence increases the parent's willingness to introduce more such activities. By week three, however, the activity has been quietly dropped. A balancing loop has activated: the morning is too rushed, water spills, the parent cleans up, the cleanup costs ten minutes the family lacks, and the parent unconsciously stops setting out the jugs.</p>
+
+        <p>The strategic question shifts away from "how do I motivate myself to keep going?", since that question stays at the event level. The systems question is: what structure caused the balancing loop to overpower the reinforcing one, and what small redesign would shift the balance back? Perhaps the activity moves to the afternoon. Perhaps a tray contains the spills. Perhaps the parent accepts that ten minutes of mess is the cost of an hour of engaged learning. The dance continues either way; the strategy is to dance with awareness rather than be moved by it.</p>
+
+        <div class="insight">
+          <p>Most failed home routines are unbalanced loops in which the constraint was never named, and so could never be designed around, rather than failures of willpower.</p>
+        </div>
+
+        <h2>Why this matters for data use</h2>
+        <p>Reading observations through the lens of reinforcing and balancing loops changes what counts as a useful intervention. A piece of evidence becomes more than "what is happening" and turns into "which loop is currently dominant, and what would it take to shift the balance?" This is the systems-thinking layer that keeps the Listening Loop from becoming yet another productivity framework imposed on a family.</p>
+      </div>
+    </section>
+
+    <!-- ============== WALDORF & MONTESSORI ============== -->
+    <section class="page" id="approaches">
+      <div class="strip">
+        <span>Page 05</span>
+        <div class="strip-right">
+          <span>Pedagogical Frameworks</span>
+          <span>Comparative Analysis</span>
+        </div>
+      </div>
+      <div class="container">
+        <div class="pg-num">05 · Pedagogical Frameworks</div>
+        <h1>Waldorf and <em>Montessori</em>.</h1>
+        <p class="subtitle">Two philosophies, one child, and the role of data in choosing between them</p>
+        <p class="lede">The strategy avoids adopting a single pedagogical method. It treats Waldorf and Montessori as complementary lenses, and uses ongoing observation to determine which approach serves the child in a given period. This is itself an evidence-informed stance: rather than picking the philosophically most appealing method and forcing the child into it, the parent allows the child's data to indicate which framework currently fits.</p>
+
+        <div class="compare">
+          <div class="compare-col">
+            <div class="compare-tag">Approach One</div>
+            <h3>Montessori</h3>
+            <p>Montessori education is grounded in the prepared environment, child-led work, and concrete materials with a built-in self-correcting structure. The child chooses freely from a curated set of materials, works in long uninterrupted periods, and develops independence through purposeful activity (Montessori, 1967). Observation is central: the adult watches to identify which sensitive period the child is in and what the next developmental work should be.</p>
+          </div>
+          <div class="compare-col">
+            <div class="compare-tag">Approach Two</div>
+            <h3>Waldorf</h3>
+            <p>Waldorf education, drawn from Steiner's developmental philosophy, emphasizes imagination, rhythm, story, natural materials, and the deliberate delay of formal academics until the child is developmentally ready (Steiner, 1995). The home is shaped by predictable rhythms, daily, weekly, seasonal, and the child's inner life is treated as a domain to be protected rather than measured.</p>
+          </div>
+        </div>
+
+        <div class="video-embed">
+          <div class="video-embed-head">
+            <span>Reference Video · Waldorf vs Montessori</span>
+            <span>YouTube</span>
+          </div>
+          <div class="video-frame">
+            <iframe src="https://www.youtube.com/embed/9pePgn08KAQ" title="Waldorf vs Montessori" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </div>
+        </div>
+
+        <div class="video-link-wrap">
+          <span class="video-link-label">Direct video link</span>
+          <a href="https://youtu.be/9pePgn08KAQ?si=PqgtfIfRfqVtLX28" target="_blank" rel="noopener noreferrer">https://youtu.be/9pePgn08KAQ?si=PqgtfIfRfqVtLX28</a>
+        </div>
+
+        <h2>A critical comparison</h2>
+        <p>Both traditions agree on more than they disagree on. Each places the child rather than the curriculum at the center, each is suspicious of premature academic pressure, and each privileges direct experience over abstract instruction. Their genuine differences are instructive. Montessori emphasizes concrete, structured materials and individual work; Waldorf emphasizes imaginative play, story, and group rhythm. Montessori treats the early years as a time of intense purposeful activity; Waldorf treats them as a time of dreamy, protected becoming. Montessori observation is analytical and notational; Waldorf observation is more atmospheric and holistic.</p>
+
+        <p>Each carries its own characteristic risk. A rigid Montessori application can become a prematurely tasked childhood, in which "work" colonizes play. A rigid Waldorf application can romanticize childhood to the point of withholding stimulation a particular child genuinely craves. Observation is what self-corrects, since neither philosophy can do so alone.</p>
+
+        <div class="insight">
+          <p>A blended approach works best when it is intentional, informed by observation, and responsive to the child's signals rather than locked into a predetermined doctrine.</p>
+        </div>
+
+        <h2>Building a responsive blend</h2>
+        <p>Rather than choosing one framework and adhering to it, the strategy invites you to weave both into your home in a way that serves your child's unfolding needs. The Listening Loop generates the evidence that guides which elements to emphasize in any given season. When you observe a child returning to concrete, sequential tasks, pouring, sorting, fastening, and showing visible satisfaction in mastery, Montessori-style practical life work strengthens that momentum. When the same child, weeks later, is full of imaginative narratives, role play, and an appetite for stories, the rhythm and imagery of a Waldorf-shaped day nourishes that shift. Emotional data matters too: a dysregulated child often stabilizes fastest within the predictable, rhythmic structure Waldorf emphasizes before they can sustain the focused, independent work Montessori requires.</p>
+
+        <p>This blend functions as a deliberate design choice grounded in what you observe, rather than as a compromise or a default. Montessori provides the architecture of choice, independence, and tangible mastery. Waldorf provides the soul of rhythm, imagination, and relational care. Together, they create a home learning environment that can flex as your child grows and changes, holding both structure and wonder without sacrificing either.</p>
+
+        <div class="action-plan">
+          <div class="action-plan-head">
+            <div class="action-plan-eyebrow">Action Plan · Blended Strategy</div>
+            <h3 class="action-plan-title">The Blended Homeschooling Strategy</h3>
+            <p class="action-plan-subtitle">Ages 16 months &amp; 3 years  ·  Combining Montessori independence and Waldorf rhythm</p>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Domain</th>
+                <th>Montessori Integration <span class="col-label">Independence</span></th>
+                <th>Waldorf Integration <span class="col-label">Imagination</span></th>
+                <th>Joint Action Plan <span class="col-label">For 16mo &amp; 3yo</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="domain-cell">Environment</td>
+                <td><strong>The Prepared Environment.</strong> Child-sized tools, low shelves, and accessible activities.</td>
+                <td><strong>Warmth &amp; Natural Beauty.</strong> Use of natural fibers (wood, wool, silk), warm colors, and an avoidance of plastic.</td>
+                <td>Create a "Practical Life" station in the kitchen with a wooden stool. Use baskets for open-ended wooden blocks and silks.</td>
+              </tr>
+              <tr>
+                <td class="domain-cell">Daily Rhythm</td>
+                <td><strong>The Work Cycle.</strong> Uninterrupted periods where the child chooses a specific task to master.</td>
+                <td><strong>In-breath &amp; Out-breath.</strong> Alternating between focused tasks and free-flow play or outdoor time.</td>
+                <td>Morning Work: 3yo chooses a "work" (e.g., pouring water), while 16mo explores a sensory basket. Followed by an "Out-breath" park visit.</td>
+              </tr>
+              <tr>
+                <td class="domain-cell">Curriculum Focus</td>
+                <td><strong>Practical Life &amp; Sensorial.</strong> Learning to button, pour, sweep, and identify textures and shapes.</td>
+                <td><strong>Story &amp; Seasonal Celebration.</strong> Learning through oral storytelling, puppetry, and seasonal festivals.</td>
+                <td>Meal Prep: 3yo chops soft fruit with a safety knife; 16mo washes veggies. End the day with a repetitive "Seasonal Puppet Tale."</td>
+              </tr>
+              <tr>
+                <td class="domain-cell">Adult's Role</td>
+                <td><strong>The Observer.</strong> Step back and allow the child to struggle and solve problems independently.</td>
+                <td><strong>The Worthy Model.</strong> The adult performs household tasks with joy and mindfulness for the child to imitate.</td>
+                <td>Fold laundry or bake bread <em>with</em> them. Rather than teaching the task as instruction, simply do it beautifully and let them join in with their own small cloth or dough.</td>
+              </tr>
+              <tr>
+                <td class="domain-cell">Art &amp; Literacy</td>
+                <td><strong>Realism.</strong> Use books with real photographs and stories about the real world.</td>
+                <td><strong>Creative Expression.</strong> Wet-on-wet watercolor painting and fairy tales.</td>
+                <td>Use beeswax crayons for coloring. Read books about animals and nature, then transition into a "Circle Time" with rhythmic fingerplays.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="principle">
+          <p>You are the one deciding which approach to emphasize, informed by what your child is showing you each season.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== INTERVIEWS ============== -->
+    <section class="page" id="interviews">
+      <div class="strip">
+        <span>Page 06</span>
+        <div class="strip-right">
+          <span>Field Insights</span>
+          <span>Two Voices · Kazakhstan</span>
+        </div>
+      </div>
+      <div class="container">
+        <div class="pg-num">06 · Field Insights</div>
+        <h1>Voices from <em>practice</em>.</h1>
+        <p class="lede">A strategy developed only from literature is a thin strategy. Three interviews ground this work in lived experience: one with a Montessori practitioner working in Kazakhstan, one with a homeschooling parent from a Filipino-Kazakh family, and one with a young woman who was herself homeschooled and now reflects on what that upbringing gave her.</p>
+
+        <div class="interview">
+          <div class="interview-head">
+            <span>Interview 01 · Montessori Practitioner</span>
+            <span>Kazakhstan</span>
+          </div>
+          <div class="interview-body">
+            <h3>On adapting Montessori for the Central Asian home</h3>
+            <p>This conversation surfaced how a method developed in early twentieth-century Italy is interpreted, modified, and sometimes resisted in a Kazakhstani context where extended family, multilingual environments, and culturally distinct expectations of obedience all shape what "child-led" can mean in practice.</p>
+            <div class="placeholder">[Insert insight here, practitioner's reflection on the most common misunderstanding of Montessori among Kazakhstani parents]</div>
+            <div class="placeholder">[Insert insight here, what the practitioner observes when families try to translate the method into the home without training]</div>
+            <div class="placeholder">[Insert insight here, how cultural expectations around grandparents, discipline, and language shift the prepared environment]</div>
+            <div class="placeholder">[Insert insight here, practitioner's view on data, observation, and what they record about a child in a typical week]</div>
+          </div>
+        </div>
+
+        <div class="interview">
+          <div class="interview-head">
+            <span>Interview 02 · Homeschooling Parent</span>
+            <span>Filipino-Kazakh Family</span>
+          </div>
+          <div class="interview-body">
+            <h3>On raising a young child between cultures</h3>
+            <p>This conversation explored the lived experience of a multilingual, multicultural household choosing to homeschool, and the specific kinds of attentiveness the parent has learned to bring to her teaching. What emerged was a vivid picture of evidence-informed practice grounded in observation, flexibility, and relational priority.</p>
+
+            <h3>On observing rather than measuring</h3>
+            <p>The parent began without a fixed set of guidelines or rules to measure her children's learning and development. She was aware from the start that every child learns differently and at their own pace. To make her class more engaging and enjoyable, she first identified each child's preferred way of learning, then adjusted her teaching approach accordingly. Being the primary teacher made it simple for her to notice when content was failing to land. When the curriculum stopped working, she felt free to modify it or change it entirely.</p>
+
+            <h3>On differentiating between her children</h3>
+            <p>Her oldest son enjoys reading books, particularly those about history, while her youngest is less drawn to reading. The youngest tended to lose interest in history lessons and pay less attention than his older brother. To engage him more, she added role-playing exercises with props alongside the hands-on activities already built into the curriculum, turning the same content into something his learning style could meet.</p>
+
+            <h3>On reading resistance as data</h3>
+            <p>When she observed significant resistance and persistent failure with little improvement, she treated it as a signal worth investigating rather than a behavior to push past. Usually, she said, there is a deeper reason than her child simply having a rough day. Keeping her children happy and enjoying the work was, in her view, the condition that made deeper learning possible.</p>
+
+            <h3>On character before content</h3>
+            <p>For her family, the cornerstone was building the right foundation. She and her husband aim to instill faith, values, and character in their children, holding that good character is the most important thing, raising them to be wise as well as intelligent. Homeschooling allowed her family a closeness she still values: an open and honest relationship, and the flexibility to travel and experience the world together. Their homeschooling could go everywhere with them. They worked to make it fun and exciting, which she believes is what turns children into lifelong learners. Her advice to other homeschooling families is to feed the child's heart before their mind, address character first, and then make them fall in love with learning rather than with studying. She added that parents have to model this themselves, and to enjoy every "aha" moment along the way.</p>
+          </div>
+        </div>
+
+        <div class="interview">
+          <div class="interview-head">
+            <span>Interview 03 · Formerly Homeschooled Adult</span>
+            <span>M.R. · 27, Female</span>
+          </div>
+          <div class="interview-body">
+            <h3>On being homeschooled, looking back</h3>
+            <p>This conversation gave the project something the literature alone struggled to provide: the perspective of someone who has lived through a homeschool education and can now reflect on what it formed in her. Her account speaks directly to the long-term outcomes of an evidence-informed, child-led approach.</p>
+
+            <h3>On becoming her own measure</h3>
+            <p>The big advantage of homeschooling, in her view, was that she felt genuinely nurtured at school, and that environment made her into her own competition. She became her own biggest critic in everything. She acknowledged that this carries both negative and positive sides, but she chose to channel it positively, toward becoming a better person and toward learning more than what was on the page. Her education, she said, was as much emotional and mental as it was academic. It shaped how she discovered what she liked, who she was, and how to converse with others in a structured way. It also gave her a kind of security: with no peers to compete against, and a clear sense of her own identity, she carries her insecurities differently than someone shaped by a classroom full of comparison.</p>
+
+            <h3>On family closeness</h3>
+            <p>Homeschooling, she said, helped her become very close to her parents, and that closeness is something she now wants to recreate for her own future children.</p>
+
+            <h3>On loving to learn</h3>
+            <p>She is grateful that her parents chose homeschooling for her. She loves to learn, and she traces that directly to how she was raised. Education was treated as something enjoyable, and she absorbed that as a homeschooled child because her parents allowed her to choose much of what she wanted to learn and how she wanted to learn it. She believes she retained so much more, and so much better, because of that freedom.</p>
+          </div>
+        </div>
+
+        <h2>Synthesis</h2>
+        <p>Read together, these three voices compose something more useful than any one of them alone. The Montessori practitioner offers the trained professional's frame; the homeschooling parent offers the living practitioner's adaptation; the formerly homeschooled adult offers the long view from the receiving end of the work. Several themes recurred across the conversations. Observation, in each account, mattered more than measurement. Flexibility was treated as a strength rather than a deviation from rigor. Relationship, between parent and child, between siblings, between the family and the wider culture, was framed as the soil that learning grows in, rather than as background noise to control for. These voices confirm in lived form what Berliner argues theoretically, that educational complexity resists clean transfer (Berliner, 2002), and what Bateson means when she insists that warm data must be gathered across multiple relational contexts at once (Bateson, 2017). The strategy proposed here is stronger for being accountable to those voices.</p>
+      </div>
+    </section>
+
+    <!-- ============== CHALLENGES ============== -->
+    <section class="page" id="challenges">
+      <div class="strip">
+        <span>Page 07</span>
+        <div class="strip-right">
+          <span>Puzzles &amp; Tensions</span>
+        </div>
+      </div>
+      <div class="container">
+        <div class="pg-num">07 · Puzzles &amp; Challenges</div>
+        <h1>What <em>resists</em> the strategy.</h1>
+        <p class="lede">An honest evidence-informed strategy must surface its own limits. Four challenges shaped this project, and each remains partially unresolved. They appear here as productive tensions that the strategy has to keep negotiating, rather than as defects to hide.</p>
+
+        <div class="challenge-item">
+          <div class="challenge-num">i.</div>
+          <div>
+            <h3>Measurement limits</h3>
+            <p>The most important things a young child is doing, building a sense of self, learning that the world responds to them, developing inner narrative, are precisely the things hardest to measure. Vocabulary counts and sleep hours are tractable. The development of imagination, of moral intuition, of the capacity for unstructured wonder, resists measurement. The strategy resists collapsing the latter into the former, even at the cost of a less tidy dataset.</p>
+          </div>
+        </div>
+
+        <div class="challenge-item">
+          <div class="challenge-num">ii.</div>
+          <div>
+            <h3>Subjectivity in observation</h3>
+            <p>The same child, on the same morning, will be described differently by two parents. One sees defiance; the other sees fatigue. There is no neutral observer, and the strategy avoids pretending otherwise. The partial mitigation is to write observations down before interpreting them, to compare notes across caregivers, and to treat each interpretation as a hypothesis rather than a finding. This honors the principle that reflectivity is the operative concept in evidence-based practice (Timperley, 2005), though it makes bias visible rather than eliminating it.</p>
+          </div>
+        </div>
+
+        <div class="challenge-item">
+          <div class="challenge-num">iii.</div>
+          <div>
+            <h3>Tension between frameworks</h3>
+            <p>Waldorf and Montessori share much, but they differ on questions where the child's behavior may struggle to arbitrate. When and whether to introduce early literacy is the clearest example, since Montessori sensitive-period theory invites it earlier than Waldorf developmental philosophy permits. The strategy avoids pretending to dissolve this tension. It treats the difference as a live disagreement that the parent must hold with humility, leaning on the child's observable engagement rather than the persuasiveness of either tradition.</p>
+          </div>
+        </div>
+
+        <div class="challenge-item">
+          <div class="challenge-num">iv.</div>
+          <div>
+            <h3>Context constraints</h3>
+            <p>The strategy assumes a parent with the time, attention, and discretion to observe and adapt. Many parents have little of these in steady supply. Single-caregiver households, high-stress work environments, and the realities of caring for multiple children all constrain what the Listening Loop can be in practice. The strategy is genuinely useful when scaled to the actual capacity of the family, which means a five-minute weekly reflection may prove more sustainable, and therefore more powerful, than a planned hour.</p>
+          </div>
+        </div>
+
+        <div class="insight">
+          <p>A strategy that fails to name its constraints will be defeated by them silently. A strategy that names them can be designed to survive them.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== REFLECTION ============== -->
+    <section class="page" id="reflection">
+      <div class="strip">
+        <span>Page 08</span>
+        <div class="strip-right">
+          <span>Personal Reflection</span>
+        </div>
+      </div>
+      <div class="container">
+        <div class="pg-num">08 · Personal Reflection</div>
+        <h1>What I <em>learned</em>.</h1>
+        <p class="lede">Building this strategy changed how I think about evidence in education in ways I had failed to anticipate. The starting question, how should a parent use data at home, turned out to be the wrong question. The better question, which the course gradually revealed, is: what kind of attention does a child deserve, and how can evidence keep that attention honest?</p>
+
+        <h2>From technique to practical wisdom</h2>
+        <p>I came in looking for a method. I leave with what Aristotle called <em>phronesis</em>, practical wisdom, the capacity to do the right thing in the particular case, which resists reduction to a rule (Aristotle, trans. 2009). Educational decisions in a home are navigated by judgment rather than solved by methods, and judgment is what the inquiry cycle is actually training. The Ask, Observe, Interpret, Act, Reflect sequence functions as a discipline for becoming the kind of parent who can perceive what the child needs, rather than as a procedure for finding answers.</p>
+
+        <h2>From data to warm data</h2>
+        <p>Bateson's idea of warm data shifted my sense of what evidence even is (Bateson, 2017). I had assumed that more rigorous data meant more numerical data. The course made the opposite case persuasively: the most useful information about a learning child is relational, multi-contextual, and resistant to flattening. A weekly written paragraph that captures the texture of a Tuesday is closer to evidence than a dashboard of metrics that lost the Tuesday somewhere in its averaging.</p>
+
+        <h2>From simplicity to complexity</h2>
+        <p>Berliner's argument that education is the hardest of the hard sciences reframed my expectations entirely (Berliner, 2002). I had been quietly hoping for a strategy clean enough to defend in a single paragraph. Educational complexity makes that hope a category error. Real strategies in real homes are messy, partial, and context-dependent, and that messiness is the appropriate response to a genuinely complex domain rather than a failure of rigor.</p>
+
+        <h2>From knowing to using</h2>
+        <p>Nutley's distinction between knowing what evidence says and actually using it in practice exposed a personal pattern I had failed to see clearly before (Nutley et al., 2003). I am quick to read and slow to apply. The course pushed me to design every cycle around a single small action, on the principle that one implemented insight outperforms ten unused ones. This carries beyond a parenting lesson; it is a research-to-practice lesson I will carry into other work.</p>
+
+        <h2>From inquiry as event to inquiry as posture</h2>
+        <p>Timperley's framing of professional inquiry as an ongoing posture rather than an episodic activity was the most quietly transformative idea (Timperley, 2005). The Listening Loop is, increasingly, a way I attend rather than a thing I do. The strategy succeeds when it sustains the right kind of attention over time, rather than when it produces the right answer for the child.</p>
+
+        <div class="principle">
+          <p>Data plus judgment, judgment shaped by context, context examined through reflection. That is the whole strategy in one sentence, and learning to live inside that sentence is the work.</p>
+        </div>
+
+        <h2>What I will hold onto</h2>
+        <p>Three convictions remain. First, data and judgment work as partners rather than alternatives, since either alone is dangerous. Second, context is the substance of the educational situation rather than noise to be controlled away, and stripping it out is what makes naive evidence-based practice fail. Third, reflection sits at the center of the cycle rather than serving as its closing ceremony. Without it, observation becomes surveillance and action becomes habit. With it, the loop keeps listening.</p>
+
+        <div class="ornament">❋ &nbsp; ❋ &nbsp; ❋</div>
+      </div>
+    </section>
+
+    <!-- ============== REFERENCES ============== -->
+    <section class="page" id="refs">
+      <div class="strip">
+        <span>Page 09</span>
+        <div class="strip-right">
+          <span>References</span>
+        </div>
+      </div>
+      <div class="container">
+        <div class="pg-num">09 · References</div>
+        <h1><em>References</em>.</h1>
+        <div class="references">
+          <p>Aristotle. (2009). <em>The Nicomachean ethics</em> (D. Ross, Trans.; L. Brown, Ed.). Oxford University Press. (Original work published ca. 350 B.C.E.)</p>
+
+          <p>Bateson, N. (2017). Warm data: Contextual research and the evolution of science. <em>Norsk Antropologisk Tidsskrift</em>, <em>28</em>(1–2), 35–40. https://doi.org/10.18261/issn.1504-2898-2017-01-02-05</p>
+
+          <p>Berliner, D. C. (2002). Educational research: The hardest science of all. <em>Educational Researcher</em>, <em>31</em>(8), 18–20. https://doi.org/10.3102/0013189X031008018</p>
+
+          <p>Heckman, J. J. (2006). Skill formation and the economics of investing in disadvantaged children. <em>Science</em>, <em>312</em>(5782), 1900–1902. https://doi.org/10.1126/science.1128898</p>
+
+          <p>Montessori, M. (1967). <em>The absorbent mind</em> (C. A. Claremont, Trans.). Holt, Rinehart and Winston. (Original work published 1949)</p>
+
+          <p>Nutley, S., Walter, I., &amp; Davies, H. T. O. (2003). From knowing to doing: A framework for understanding the evidence-into-practice agenda. <em>Evaluation</em>, <em>9</em>(2), 125–148. https://doi.org/10.1177/1356389003009002002</p>
+
+          <p>Senge, P., Kleiner, A., Roberts, C., Ross, R., Roth, G., &amp; Smith, B. (1999). <em>The dance of change: The challenges of sustaining momentum in learning organizations</em>. Doubleday.</p>
+
+          <p>Steiner, R. (1995). <em>The kingdom of childhood: Introductory talks on Waldorf education</em> (H. Fox, Trans.). Anthroposophic Press. (Original work published 1924)</p>
+
+          <p>Timperley, H. (2005). Distributed leadership: Developing theory from practice. <em>Journal of Curriculum Studies</em>, <em>37</em>(4), 395–420. https://doi.org/10.1080/00220270500038545</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>The Listening Loop · 2026</span>
+      <span>Final Assessment / KIMEP</span>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  const links = document.querySelectorAll('nav.rail a');
+  const pages = document.querySelectorAll('.page');
+  links.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const target = link.dataset.page;
+      links.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      pages.forEach(p => p.classList.remove('active'));
+      const targetPage = document.getElementById(target);
+      // Force reflow to restart animation
+      targetPage.classList.remove('active');
+      void targetPage.offsetWidth;
+      targetPage.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
