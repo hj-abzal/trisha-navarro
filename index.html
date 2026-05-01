@@ -988,6 +988,299 @@
   .references p:last-child { border-bottom: none; }
   .references em { color: var(--moss); font-style: italic; }
 
+  /* ---------- REFLECTION SHIFTS LIST ---------- */
+  .reflection-shifts {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 2rem 0;
+    border-left: 2px solid var(--ochre);
+  }
+  .reflection-shifts li {
+    position: relative;
+    padding: 0.7rem 0 0.7rem 1.6rem;
+    color: var(--ink-soft);
+    font-size: 1rem;
+    line-height: 1.7;
+    border-bottom: 1px solid var(--line);
+  }
+  .reflection-shifts li:last-child {
+    border-bottom: none;
+  }
+  .reflection-shifts li::before {
+    content: "→";
+    position: absolute;
+    left: 0.5rem;
+    color: var(--moss);
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.2rem;
+    top: 0.7rem;
+  }
+  .reflection-shifts em {
+    color: var(--moss);
+    font-style: italic;
+  }
+
+  /* ---------- SYNTHESIS PAGE ---------- */
+  .synthesis-intro {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1.8rem 2rem;
+    margin: 2rem 0 3rem 0;
+    text-align: center;
+  }
+  .synthesis-intro-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--moss);
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+  .synthesis-intro h3 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    color: var(--ink);
+    margin: 0 0 0.4rem 0;
+    line-height: 1.2;
+  }
+  .synthesis-intro p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .strand-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+    margin: 2rem 0 3rem 0;
+  }
+  @media (max-width: 900px) {
+    .strand-grid { grid-template-columns: 1fr; }
+  }
+
+  .strand {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1.8rem 1.8rem 1.5rem 1.8rem;
+    transition: border-color 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .strand:hover {
+    border-color: var(--line-strong);
+    transform: translateY(-3px);
+  }
+  .strand::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+  }
+  .strand[data-color="blue"]::before   { background: #3a6a8c; }
+  .strand[data-color="green"]::before  { background: #6a8c3a; }
+  .strand[data-color="yellow"]::before { background: var(--ochre); }
+  .strand[data-color="orange"]::before { background: var(--rose); }
+  .strand[data-color="red"]::before    { background: var(--moss); }
+  .strand[data-color="purple"]::before { background: #6e3a8c; }
+  .strand[data-color="navy"]::before   { background: #2a3a5c; }
+
+  .strand-num {
+    display: inline-block;
+    width: 1.8rem;
+    height: 1.8rem;
+    line-height: 1.8rem;
+    text-align: center;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--bg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-right: 0.7rem;
+    vertical-align: middle;
+  }
+  .strand-num.core {
+    background: var(--moss);
+    color: var(--bg);
+  }
+  .strand-title {
+    display: inline-block;
+    vertical-align: middle;
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--ink);
+    margin: 0;
+  }
+  .strand-tagline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--ink-mid);
+    margin: 0.5rem 0 1rem 0;
+    padding-left: 2.5rem;
+  }
+  .strand-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+    padding-left: 2.5rem;
+  }
+  .strand-body strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .strand-key {
+    background: rgba(184, 137, 61, 0.10);
+    border-left: 3px solid var(--ochre);
+    padding: 0.7rem 1rem;
+    margin-left: 2.5rem;
+    border-radius: 4px;
+  }
+  .strand-key-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--moss);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .strand-key-text {
+    font-family: 'Instrument Serif', serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .strand.core-strand {
+    grid-column: 1 / -1;
+    background: var(--ink);
+    color: var(--bg);
+    text-align: center;
+    padding: 2rem 2rem;
+  }
+  .strand.core-strand .strand-num.core {
+    background: var(--ochre);
+    color: var(--ink);
+  }
+  .strand.core-strand .strand-title {
+    color: var(--bg);
+    font-size: 1.8rem;
+  }
+  .strand.core-strand .strand-tagline {
+    color: var(--ochre);
+    padding-left: 0;
+  }
+  .strand.core-strand .strand-body {
+    color: var(--bg-soft, #d6cfc1);
+    padding-left: 0;
+    max-width: 70ch;
+    margin: 0 auto 1rem auto;
+  }
+  .strand.core-strand .strand-body strong {
+    color: var(--bg);
+  }
+  .strand.core-strand .strand-key {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 50ch;
+    background: rgba(184, 137, 61, 0.18);
+    border-left-color: var(--ochre);
+  }
+  .strand.core-strand .strand-key-text {
+    color: var(--bg);
+  }
+
+  .central-node {
+    background: linear-gradient(135deg, rgba(139, 45, 31, 0.06), rgba(184, 137, 61, 0.06));
+    border: 2px solid var(--moss);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    margin: 3rem 0;
+    text-align: center;
+  }
+  .central-node-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--moss);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .central-node h3 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 2.2rem;
+    color: var(--ink);
+    margin: 0 0 0.5rem 0;
+    line-height: 1.1;
+  }
+  .central-node-tagline {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--moss);
+    margin: 0;
+  }
+
+  .final-synthesis {
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: 12px;
+    padding: 2.2rem 2rem;
+    margin: 3rem 0 2rem 0;
+    text-align: center;
+    position: relative;
+  }
+  .final-synthesis-mark {
+    color: var(--ochre);
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .final-synthesis-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .final-synthesis-text {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.4rem;
+    color: var(--bg);
+    margin: 0 0 0.8rem 0;
+    line-height: 1.4;
+  }
+  .final-synthesis-equation {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--ochre);
+    margin: 0;
+    line-height: 1.4;
+  }
+  .final-synthesis-equation .plus {
+    color: var(--bg);
+    margin: 0 0.5rem;
+    font-style: normal;
+  }
+
   /* ---------- ORNAMENT ---------- */
   .ornament {
     margin: 4rem 0;
@@ -1081,7 +1374,8 @@
       <a data-page="interviews"><span class="num">06</span><span>Field Voices</span></a>
       <a data-page="challenges"><span class="num">07</span><span>Challenges</span></a>
       <a data-page="reflection"><span class="num">08</span><span>Reflection</span></a>
-      <a data-page="refs"><span class="num">09</span><span>References</span></a>
+      <a data-page="synthesis"><span class="num">09</span><span>Synthesis</span></a>
+      <a data-page="refs"><span class="num">10</span><span>References</span></a>
     </nav>
 
     <div class="rail-foot">
@@ -1099,7 +1393,7 @@
           <span><strong>Filed:</strong> April 2026</span>
           <span><strong>Author:</strong> T. Navarro</span>
           <span><strong>Course:</strong> Data and Evidence-Based Leadership</span>
-          <span><strong>Pages:</strong> 10 / 10</span>
+          <span><strong>Pages:</strong> 11 / 11</span>
         </div>
 
         <div class="hero-main">
@@ -1644,37 +1938,241 @@
       <div class="container">
         <div class="pg-num">08 · Personal Reflection</div>
         <h1>What I <em>learned</em>.</h1>
-        <p class="lede">This reflection traces my journey across the entire course rather than only the final task. The center of gravity, the idea that has reshaped how I think about evidence-based practice in education, is <em>reflectivity</em>, drawn directly from Timperley (2005). What follows maps where I was before the course, what shifted during it, and what I now carry forward.</p>
+        <p class="lede">This reflection looks across my learning in the course as a whole, rather than focusing only on the final task. One idea gradually moved to the center of my thinking: reflectivity. As discussed in Helen Timperley (2005), reflectivity shapes how evidence becomes meaningful in practice. In what follows, I describe where my thinking began, how it shifted, and what I now carry forward.</p>
 
         <h2>Where I started</h2>
-        <p>At the beginning of the course, I held a quietly technical view of evidence-based practice. I assumed evidence meant data, data meant numbers, and rigor meant precision. I treated educational decisions as problems to be solved by finding the right method and applying it correctly. Reflection, in my earlier framing, was something you did at the end of a unit or after a project: a closing exercise, a tidy summary of what worked. I had yet to see reflectivity as the engine of practice; I saw it as the cool-down after the workout.</p>
+        <p>At the beginning of the course, I approached evidence-based practice in a technical way. I associated evidence with data, and data with numbers. Strong practice, in my mind, meant selecting the right method and applying it correctly. Reflection felt like something that happens at the end, a way to summarize what already took place.</p>
 
-        <p>I also entered the course with a strong appetite for clean answers. I was hoping that the readings would converge on a defensible method, a single best approach, a framework I could adopt and apply. I was, in retrospect, looking for certainty in a domain that resists it.</p>
+        <p>I also found myself looking for clear and stable answers. I expected that the readings would point toward a reliable method or a best approach that could be applied with confidence. In many ways, I was searching for certainty in a field that is deeply shaped by human relationships and context.</p>
 
         <h2>What the course shifted</h2>
-        <p>The single most transformative concept for me was Timperley's framing of reflectivity as the operative concept in evidence-based practice (Timperley, 2005). Timperley argues that inquiry is a continuous posture rather than an event, and that the quality of professional practice rests on the quality of reflection embedded throughout the cycle, rather than on the elegance of the method applied. This reframing changed everything downstream in my thinking.</p>
+        <p>Over time, the idea of reflectivity began to reshape how I understood evidence-based practice. Timperley (2005) presents inquiry as an ongoing process, where reflection is woven throughout, rather than placed at the end. This shifted my attention away from methods alone and toward how decisions are continuously examined and revised.</p>
 
-        <p>Reflectivity, as Timperley uses the term, means treating each act of teaching or parenting as a hypothesis open to revision, examining one's own assumptions in the act of observing, and allowing evidence to genuinely change one's mind rather than confirm what one already believed. This is harder than it sounds. It asks the practitioner to hold a kind of disciplined humility, to be willing to find that what worked last week is failing this week, that the child has changed, that the evidence is pointing somewhere uncomfortable.</p>
+        <p>From this perspective, reflectivity means approaching practice with openness. Each decision becomes something to revisit. Observations are considered alongside assumptions, and evidence has the possibility to redirect thinking. This requires a level of awareness and humility, especially in situations where outcomes change over time or differ across contexts.</p>
 
-        <p>Once I understood reflectivity in this fuller sense, the other course concepts began to organize themselves around it. The inquiry cycle stopped being a procedural sequence and became a structured practice of reflective attention. The iceberg model stopped being a diagram and became a discipline for asking what lies beneath an observed event. Bateson's warm data stopped being an interesting alternative to numerical data and became the natural product of a reflective stance, since reflection across multiple contexts is precisely what generates relational evidence (Bateson, 2017). Nutley's distinction between knowing and using exposed why reflectivity matters so much in practice: without it, evidence stays inert (Nutley et al., 2003). And Berliner's argument that education is the hardest of the hard sciences clarified why reflectivity is the appropriate response to such complexity rather than a substitute for rigor (Berliner, 2002).</p>
+        <p>As this understanding developed, other concepts from the course began to connect more clearly. The inquiry cycle became a way of sustaining reflection across time. The iceberg model encouraged looking beneath surface-level observations. The idea of "warm data," introduced by Nora Bateson, highlighted the importance of relationships and context in understanding learning. At the same time, work on evidence use showed that knowledge only becomes valuable when it is meaningfully applied (Nutley et al., 2003). Research on educational complexity further reinforced this, emphasizing that teaching and learning involve many interacting factors that resist simple explanations (Berliner, 2002).</p>
 
-        <h2>Five shifts I can name</h2>
-        <p>Across the course, five specific shifts in my thinking are now legible to me. I came in expecting <strong>technique</strong>; I leave practicing <em>phronesis</em>, the practical wisdom Aristotle describes as the capacity to do the right thing in a particular case (Aristotle, trans. 2009). I came in valuing <strong>data</strong>; I leave valuing <em>warm data</em>, gathered across relationships and contexts (Bateson, 2017). I came in seeking <strong>simplicity</strong>; I leave respecting <em>complexity</em> as the substance of the educational situation rather than as noise (Berliner, 2002). I came in confident about <strong>knowing</strong>; I leave focused on <em>using</em>, since one implemented insight outperforms ten unused ones (Nutley et al., 2003). And I came in treating <strong>inquiry as an event</strong>; I leave treating <em>inquiry as a posture</em>, sustained through ongoing reflectivity (Timperley, 2005).</p>
+        <h2>Key shifts in my thinking</h2>
+        <p>Looking back, I can see several clear shifts in how I think:</p>
+        <ul class="reflection-shifts">
+          <li>I moved from focusing on methods to focusing on judgment and practical wisdom, often described as <em>phronesis</em> by Aristotle.</li>
+          <li>I began to value relational and contextual understanding alongside observable data.</li>
+          <li>I developed greater appreciation for complexity as an essential feature of education.</li>
+          <li>I shifted from accumulating knowledge toward using it meaningfully in practice.</li>
+          <li>I now see inquiry as an ongoing stance rather than a single step in a process.</li>
+        </ul>
 
         <h2>How my practice changed</h2>
-        <p>The change in my thinking became visible in how I designed this final task itself. Earlier in the course, I would have built a strategy that recommended specific actions and presented them as best practice. By the time I designed the Listening Loop, I had absorbed enough of Timperley's framing that I knew the strategy had to center reflective attention rather than method, and had to remain revisable rather than complete. Every cycle in the Listening Loop ends with reflection by design, since Timperley's argument is that without that step, observation becomes surveillance and action becomes habit. The strategy is, in a real sense, a structured habit of reflectivity translated for the home.</p>
+        <p>These shifts became visible in how I designed my final task. Earlier in the course, I likely would have created a structured set of recommendations and presented them as best practices. Over time, I began to focus more on creating a process that remains flexible and responsive.</p>
 
-        <p>This same shift now shapes how I read other educational research. I notice when a study reports findings without showing the reflective process that produced them. I notice when a method is offered as transferable without acknowledgment of context. I notice the difference between research that closes a question and research that opens one. None of this attention was available to me at the start of the course.</p>
+        <p>The strategy I developed places reflection at the center. Each cycle of observation and action leads back into reflection, allowing decisions to evolve over time. This approach supports ongoing adjustment based on the child's needs and the learning context. In this way, the strategy reflects a continuous process rather than a finished product.</p>
+
+        <p>I also notice changes in how I engage with research. I pay closer attention to how findings are interpreted and applied. I consider the role of context more carefully, and I look for spaces where further questions emerge rather than expecting closure.</p>
 
         <h2>What remains open</h2>
-        <p>Honest reflection requires naming what remains uncertain. I have questions I am leaving the course with. How do I sustain a reflective posture under fatigue, when reflection itself is the first thing that gets dropped? How do I help others, my future students, my own family, develop reflectivity as a practice rather than imposing it as a requirement? How do I distinguish productive reflection from rumination, since the former generates new action while the latter only generates more thought? These questions feel like the right questions to be carrying forward, since they are questions only a reflective practitioner would think to ask.</p>
+        <p>This learning journey also leaves me with important questions. I continue to think about how to sustain reflective practice in everyday situations, especially when time and energy are limited. I also consider how reflectivity can be developed in others in a way that feels meaningful and supportive. Another area of reflection involves distinguishing between productive reflection that leads to action and forms of thinking that remain circular.</p>
+
+        <p>These questions feel valuable to carry forward. They reflect an ongoing engagement with practice and suggest that learning in this area continues beyond the course.</p>
 
         <div class="principle">
-          <p>Data plus judgment, judgment shaped by context, context examined through reflection. That is the whole strategy in one sentence, and learning to live inside that sentence is the work.</p>
+          <p>Through this experience, I have come to see that evidence-based practice is shaped through reflection, context, and judgment. Reflectivity brings these elements together, allowing data to inform practice in ways that remain responsive to real-life situations.</p>
         </div>
 
-        <h2>What I will hold onto</h2>
-        <p>Three convictions remain, each grounded in the reflectivity that Timperley placed at the center of evidence-based practice. First, data and judgment work as partners rather than alternatives, since either alone collapses into something dangerous. Second, context is the substance of the educational situation rather than noise to be controlled away, and stripping it out is what makes naive evidence-based practice fail. Third, reflection sits at the center of the cycle rather than serving as its closing ceremony. Without it, observation becomes surveillance and action becomes habit. With it, the loop keeps listening, and so do I.</p>
+        <div class="ornament">❋ &nbsp; ❋ &nbsp; ❋</div>
+      </div>
+    </section>
+
+    <!-- ============== SYNTHESIS ============== -->
+    <section class="page" id="synthesis">
+      <div class="strip">
+        <span>Page 09</span>
+        <div class="strip-right">
+          <span>Evidence-Based Practice in Education</span>
+        </div>
+      </div>
+      <div class="container">
+        <div class="pg-num">09 · Synthesis</div>
+        <h1>Evidence-based practice in <em>education</em>.</h1>
+        <p class="lede">Across the course readings, several strands run together. Each strand brings something different to the question of how evidence becomes useful in education, and together they form a single, layered understanding. This page synthesizes those strands and shows how they shape The Listening Loop.</p>
+
+        <h2>Understanding evidence in context</h2>
+        <p>This strategy is based on the idea that evidence in education is important, but it only becomes meaningful when it is interpreted within context. Many scholars argue that research and data should inform decisions in education. For example, Ben Levin (2003) emphasizes the connection between research, policy, and practice, showing that evidence has the potential to improve educational outcomes when it is meaningfully used. Similarly, Sandra Nutley et al. (2003) highlight that the real challenge lies in moving from knowing to doing.</p>
+
+        <p>At the same time, these perspectives suggest that evidence does not directly translate into action. Data needs to be interpreted, adapted, and understood within the specific learning environment. This is especially important in early childhood, where development is complex and deeply influenced by relationships and context.</p>
+
+        <div class="strand-grid">
+
+          <div class="strand" data-color="blue">
+            <span class="strand-num">1</span>
+            <span class="strand-title">Evidence &amp; Data Use</span>
+            <p class="strand-tagline">How evidence is understood and applied</p>
+            <p class="strand-body">
+              <strong>Levin (2003)</strong> connects research, policy, and practice.
+              <strong>Nutley et al. (2003)</strong> name the knowing–doing gap.
+              <strong>Evidence in educational research</strong> examines the nature of evidence itself.
+              <strong>Blazer (2006)</strong> shows that data depends on interpretation.
+            </p>
+            <div class="strand-key">
+              <span class="strand-key-label">Key Idea</span>
+              <p class="strand-key-text">Evidence needs interpretation.</p>
+            </div>
+          </div>
+
+          <div class="strand" data-color="green">
+            <span class="strand-num">2</span>
+            <span class="strand-title">Leadership &amp; Data</span>
+            <p class="strand-tagline">Who makes decisions with data</p>
+            <p class="strand-body">
+              <strong>Kowalski (2009)</strong> connects leadership with data use.
+              <strong>Data-driven leadership meta-analysis</strong> shows impact on outcomes.
+              <strong>Education in a data-rich world</strong> calls for balance between data and meaning.
+              <strong>Levin (leadership)</strong> shows that leaders shape evidence use.
+            </p>
+            <div class="strand-key">
+              <span class="strand-key-label">Key Idea</span>
+              <p class="strand-key-text">Leadership shapes how data is used.</p>
+            </div>
+          </div>
+
+          <div class="strand core-strand" data-color="yellow">
+            <span class="strand-num core">3</span>
+            <span class="strand-title">Reflectivity &amp; Inquiry  ·  Core</span>
+            <p class="strand-tagline">How decisions improve over time</p>
+            <p class="strand-body">
+              <strong>Timperley (2005)</strong> presents the inquiry cycle as continuous practice.
+              <strong>Godfrey (2016)</strong> introduces collaborative inquiry.
+              <strong>Forester (2019)</strong> emphasizes reflective judgment in complex situations.
+            </p>
+            <div class="strand-key">
+              <span class="strand-key-label">Key Idea</span>
+              <p class="strand-key-text">Reflection turns data into action.</p>
+            </div>
+          </div>
+
+          <div class="strand" data-color="orange">
+            <span class="strand-num">4</span>
+            <span class="strand-title">Context &amp; Complexity</span>
+            <p class="strand-tagline">Why one method does not fit all</p>
+            <p class="strand-body">
+              <strong>Berliner (2002)</strong> describes education as one of the most complex fields.
+              <strong>Zhao (2017)</strong> critiques standardization for overlooking creativity and difference.
+              <strong>Knowledge mobilisation (China, 2018)</strong> shows that context matters across cultures.
+            </p>
+            <div class="strand-key">
+              <span class="strand-key-label">Key Idea</span>
+              <p class="strand-key-text">Decisions depend on situation.</p>
+            </div>
+          </div>
+
+          <div class="strand" data-color="red">
+            <span class="strand-num">5</span>
+            <span class="strand-title">Collaboration &amp; Knowledge Mobilisation</span>
+            <p class="strand-tagline">How knowledge moves into practice</p>
+            <p class="strand-body">
+              <strong>Vanderlinde &amp; van Braak</strong> on bridging the research–practice gap.
+              <strong>Knowledge partnerships (2018)</strong> emphasize shared learning.
+              <strong>Levin (mobilisation)</strong> on actively translating evidence into practice.
+            </p>
+            <div class="strand-key">
+              <span class="strand-key-label">Key Idea</span>
+              <p class="strand-key-text">Knowledge needs relationships.</p>
+            </div>
+          </div>
+
+          <div class="strand" data-color="purple">
+            <span class="strand-num">6</span>
+            <span class="strand-title">Human Development &amp; Learning</span>
+            <p class="strand-tagline">What learning actually involves</p>
+            <p class="strand-body">
+              <strong>Social-emotional learning</strong> shows that emotions and relationships are central to development.
+              <strong>Tokuhama-Espinosa</strong> connects learning to brain-based processes.
+            </p>
+            <div class="strand-key">
+              <span class="strand-key-label">Key Idea</span>
+              <p class="strand-key-text">Learning is cognitive and emotional.</p>
+            </div>
+          </div>
+
+          <div class="strand" data-color="navy">
+            <span class="strand-num">7</span>
+            <span class="strand-title">Systems Thinking &amp; Relationships</span>
+            <p class="strand-tagline">Seeing the bigger picture</p>
+            <p class="strand-body">
+              <strong>Warm Data (Nora Bateson)</strong> as relational data.
+              <strong>Center for Systems Awareness</strong> brings a systems view.
+              <strong>MIT Systems Awareness Lab</strong> studies interconnected systems.
+              <strong>Compassionate Systems</strong> integrates systems with compassion.
+            </p>
+            <div class="strand-key">
+              <span class="strand-key-label">Key Idea</span>
+              <p class="strand-key-text">Learning happens in systems.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="central-node">
+          <div class="central-node-eyebrow">All seven strands converge</div>
+          <h3>Evidence-Based Practice in Education</h3>
+          <p class="central-node-tagline">Reflective  ·  Contextual  ·  Relational  ·  Ongoing</p>
+        </div>
+
+        <h2>The role of reflectivity and inquiry</h2>
+        <p>A key idea shaping this strategy is reflectivity. As Helen Timperley (2005) explains, effective practice depends on continuous inquiry rather than one-time decisions. This means that evidence is used within an ongoing cycle of questioning, observing, interpreting, acting, and reflecting.</p>
+
+        <p>This connects with the idea that reflection transforms data into meaningful action. Chris Godfrey (2016) also highlights collaborative inquiry as an important process, while John Forester (2019) emphasizes the role of listening and judgment in complex situations. Together, these perspectives show that reflectivity is central to understanding and improving practice.</p>
+
+        <h2>Leadership and the use of data</h2>
+        <p>Another important theme across the readings is the role of leadership in shaping how data is used. Theodore Kowalski (2009) explains that data does not guide decisions on its own; it is leaders who interpret and apply it. Similarly, Martha Blazer (2006) shows that the impact of data depends on how educators engage with it.</p>
+
+        <p>Research on data-driven leadership and education in a data-rich world further supports this idea, suggesting that effective leaders balance accountability with meaningful interpretation. In this sense, leadership is not only about using data, but about creating conditions where data can support learning.</p>
+
+        <h2>Context, complexity, and critique</h2>
+        <p>Several readings emphasize that education is highly complex. David C. Berliner (2002) describes education as one of the most complex fields, where many variables interact at the same time. This complexity means that one approach does not fit all situations.</p>
+
+        <p>From a critical perspective, Yong Zhao (2017) argues that standardized approaches may overlook creativity and individual differences. Global perspectives, such as knowledge mobilisation in China (2018), further show that evidence must be adapted to cultural and contextual realities.</p>
+
+        <h2>Collaboration and knowledge mobilisation</h2>
+        <p>Another key idea is that knowledge becomes meaningful through collaboration. Studies by Piet Vanderlinde and Johan van Braak show that bridging the gap between research and practice requires active collaboration between educators and researchers.</p>
+
+        <p>This is also reflected in knowledge partnerships (2018), which highlight the importance of shared learning, and in Levin's work on mobilising educational knowledge, which emphasizes that evidence must be actively translated into practice. These perspectives reinforce that data use is not an individual process, but a collective one.</p>
+
+        <h2>Understanding learning: cognitive and emotional dimensions</h2>
+        <p>The readings also expand the understanding of learning itself. Research on social-emotional learning shows that emotions and relationships are central to development, while Tracey Tokuhama-Espinosa connects learning to brain-based processes.</p>
+
+        <p>These perspectives suggest that evidence must include both cognitive and emotional dimensions. Learning is not only about measurable outcomes, but also about well-being, engagement, and relationships.</p>
+
+        <h2>Systems thinking and warm data</h2>
+        <p>A systems perspective further deepens this understanding. The concept of warm data, developed by Nora Bateson, highlights that meaningful information comes from relationships and interactions across contexts.</p>
+
+        <p>This connects with the work of the Center for Systems Awareness and the MIT Systems Awareness Lab, which emphasize that learning happens within interconnected systems. The Compassionate Systems framework builds on this by integrating systems thinking with emotional awareness and compassion.</p>
+
+        <h2>Synthesis: my understanding</h2>
+        <p>Bringing these ideas together, I understand evidence-based practice in education as a process that is:</p>
+
+        <ul class="reflection-shifts">
+          <li><strong>Reflective</strong>, shaped through continuous inquiry.</li>
+          <li><strong>Contextual</strong>, adapted to specific situations.</li>
+          <li><strong>Relational</strong>, grounded in relationships and interactions.</li>
+          <li><strong>Interpretive</strong>, requiring judgment and meaning-making.</li>
+          <li><strong>Ongoing</strong>, evolving over time rather than fixed.</li>
+        </ul>
+
+        <p>This understanding moves away from seeing data as something to apply directly. Instead, data becomes part of a process of listening, interpreting, and responding to the child within their environment.</p>
+
+        <h2>Connection to my strategy: The Listening Loop</h2>
+        <p>This synthesis directly informs my strategy, The Listening Loop. The cycle of asking, observing, interpreting, acting, and reflecting reflects the ideas discussed across the readings, especially the importance of reflectivity and context.</p>
+
+        <p>Rather than offering fixed methods, the strategy creates a structure for ongoing learning and adaptation. In this way, it aligns with the broader understanding that effective data use in education is not about certainty, but about continuous, thoughtful engagement with practice.</p>
+
+        <div class="final-synthesis">
+          <div class="final-synthesis-mark">❋</div>
+          <div class="final-synthesis-label">Final Synthesis</div>
+          <p class="final-synthesis-text">All strands connect into one idea: evidence-based practice works through</p>
+          <p class="final-synthesis-equation">
+            <em>reflection</em><span class="plus">+</span><em>context</em><span class="plus">+</span><em>relationships</em><span class="plus">+</span><em>systems thinking</em>
+          </p>
+        </div>
 
         <div class="ornament">❋ &nbsp; ❋ &nbsp; ❋</div>
       </div>
@@ -1683,13 +2181,13 @@
     <!-- ============== REFERENCES ============== -->
     <section class="page" id="refs">
       <div class="strip">
-        <span>Page 09</span>
+        <span>Page 10</span>
         <div class="strip-right">
           <span>References</span>
         </div>
       </div>
       <div class="container">
-        <div class="pg-num">09 · References</div>
+        <div class="pg-num">10 · References</div>
         <h1><em>References</em>.</h1>
         <div class="references">
           <p>Aristotle. (2009). <em>The Nicomachean ethics</em> (D. Ross, Trans.; L. Brown, Ed.). Oxford University Press. (Original work published ca. 350 B.C.E.)</p>
